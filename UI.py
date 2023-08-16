@@ -24,7 +24,7 @@ displayPictureName = "Nothing"
 def my_print(buffer):
     print_lock.acquire()
     dt_ms = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
-    print("INFO >> Time: %s  Buffer: %s " % (dt_ms, buffer))
+    print("[INFO] >> [Time]: %s  [Buffer]: %s " % (dt_ms, buffer))
     print_lock.release()
 
 

@@ -16,6 +16,7 @@ class URRobotThread(Thread):
         print("URRobotThread.__init__")
         Thread.__init__(self)
         self.rob = urx.Robot("192.168.1.100")
+        # UI.my_print(self.rob._dict)
         
     def run(self):
         print("URRobotThread.run")
@@ -241,7 +242,7 @@ class URRobotThread(Thread):
                     UartProtocolParseThread.moveSourceLock.release()
 		                
                     current_point = self.rob.getl()
-                    UI.my_print(" lastmoveSource : " + str(lastmoveSource) + " moveSource : " + str(moveSource) + " enableMove: " + str(enableMove) + "  current_point[1] : " + str(current_point[1]))
+                    # UI.my_print(" lastmoveSource : " + str(lastmoveSource) + " moveSource : " + str(moveSource) + " enableMove: " + str(enableMove) + "  current_point[1] : " + str(current_point[1]))
 		                
                     if lastmoveSource == 0 or lastmoveSource == 2:
                         enableMove = 1
