@@ -23,72 +23,79 @@ class URRobotThread(Thread):
         global stateMachine, task_num, task_sub_step
 
         task_list = [
-            ["wait_start_btn", "move_z", "move_x", "move_y", "send_message", "wait_message","move_z", "send_message",
+            ["wait_start_btn", "move_z", "move_y", "move_x", "send_message", "wait_message","move_z", "send_message",
              "wait_message", "task_end"],
 
-            ["move_x", "send_message", "wait_message", "send_message", "wait_message", "move_z", "send_message",
-             "wait_message", "send_message", "wait_message", "move_z", "send_message", "wait_message", "move_x",
-             "move_y", "task_end"],
+            # 任务1，将物品移动到定点的位置
+            # ["move_x", "move_y","send_message", "wait_message", "send_message", "wait_message", "move_z", "send_message",
+            #  "move_y", "move_x", "move_y", "wait_message", "send_message", "wait_message", "move_z", "send_message", 
+            #  "wait_message", "move_y", "move_x", "task_end"],
 
-            ["move_x", "send_message", "wait_message", "send_message", "wait_message", "move_z", "send_message",
-             "wait_message", "send_message", "wait_message", "move_z", "send_message", "wait_message", "move_x",
-             "move_y", "task_end"],
+            # 任务1，将物品抓起再放下
+            ["move_x", "move_y","send_message", "wait_message", "send_message", "wait_message", "move_z", "send_message",
+             "wait_message", "send_message", "wait_message", "move_z", "send_message", "wait_message", "move_y", "move_x", 
+             "task_end"],
 
-            ["move_x", "send_message", "wait_message", "move_y", "move_x", "move_y", "send_message", "wait_message",
+            ["move_x", "move_y", "send_message", "wait_message", "move_x", "move_y", "send_message", "wait_message",
              "send_message", "wait_message", "task_end"],
 
-            ["move_x", "send_message", "wait_message", "move_z", "send_message", "wait_message", "move_y", "task_end"]]
+            ["move_y", "send_message", "wait_message", "move_z", "send_message", "wait_message", "move_x", "task_end"]]
 
         message_list = [
             ["", "", "", "", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete", ""],
 
-            ["", "StartPrepare", "downSend_PrepareComplete", "StartGrab", "downSend_GrabComplete", "", "LiftComplete",
+            # 任务1，将物品移动到定点的位置
+            # ["", "", "StartPrepare", "downSend_PrepareComplete", "StartGrab", "downSend_GrabComplete", "", "LiftComplete", "", 
+            #  "", "", "downSend_RequestDecline", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete",
+            #  "", "", ""],
+
+            # 任务1，将物品抓起再放下
+            ["", "", "StartPrepare", "downSend_PrepareComplete", "StartGrab", "downSend_GrabComplete", "", "LiftComplete", 
              "downSend_RequestDecline", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete",
              "", "", ""],
 
-            ["", "StartPrepare", "downSend_PrepareComplete", "StartGrab", "downSend_GrabComplete", "", "LiftComplete",
-             "downSend_RequestDecline", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete",
-             "", "", ""],
-
-            ["", "HandInteraction", "downSend_RequestDecline", "", "", "", "StartDecline", "downReply_StartDecline",
+            ["", "", "HandInteraction", "downSend_RequestDecline", "", "", "StartDecline", "downReply_StartDecline",
              "CompleteDecline", "downSend_TaskComplete",""],
 
-            ["", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete", "", ""],
-            ]
+            ["", "StartDecline", "downReply_StartDecline", "", "CompleteDecline", "downSend_TaskComplete", "", ""]]
 
         position_list = [
-            [[0, 0, 0, 0, 0, 0], [0, 0, 0.267, 0, 0, 0], [0.139, 0, 0, 2.396, 2.376, -2.469], [0, -0.319, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0], [0, 0, 0.09, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[0, 0, 0, 0, 0, 0], [0, 0, 0.275, 0, 0, 0], [0, -0.268, 0, 0, 0, 0], [-0.107, 0, 0, 0.046, 2.200, -2.253],
+             [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0.106, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
 
-            [[0.039, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-             [0, 0, 0.267, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-             [0, 0, 0.09, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0.139, 0, 0, 0, 0, 0], [0, -0.469, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0]],
+            # 任务1，将物品移动到定点的位置
+            # [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+            #  [0, 0, 0.275, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, -0.268, 0, 0, 0, 0], [-0.386, 0, 0, 0, 0, 0], [0, -0.496, 0, 0, 0, 0],
+            #  [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0.106, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+            #  [0, -0.268, 0, 0, 0, 0], [-0.107, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
 
-            [[0.039, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-             [0, 0, 0.267, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-             [0, 0, 0.09, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0.139, 0, 0, 0, 0, 0], [0, -0.629, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0]],
+            # 任务1，将物品抓起再放下
+            [[0.186, 0, 0, 0, 0, 0], [0, -0.480, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+             [0, 0, 0.275, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0.106, 0, 0, 0], 
+             [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, -0.268, 0, 0, 0, 0], [-0.107, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
 
-            [[-0.120, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, -0.629, 0, 0, 0, 0], [0.139, 0, 0, 0, 0, 0],
-             [0, -0.319, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+            [[-0.156, 0, 0, 0, 0, 0], [0, -0.566, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [-0.156, 0, 0, 0, 0, 0], [0, -0.268, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
 
-            [[0.139, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0.09, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-             [0, -0.469, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
-                         ]
-
-        hand_y_left_limit = -0.569
-        hand_y_right_limit = -0.689
-        y0 = -0.319
-        y1 = -0.469
-        y2 = -0.629
+            [[0, -0.268, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0.106, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+             [-0.107, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]]
+        
+        hand_x_left_limit = -0.236
+        hand_x_right_limit = -0.076
+    
+        xmin = -0.370
+        xmax = 0.436
+        ymin = -0.720
+        ymax = -0.260
+        zmin = 0.100
+        zmax = 0.560
         task_num_break = 0
 
-        a = 0.05
-        v0 = 0.02
-        v1 = 0.05
-        v2 = 0.2
+        a = 0.08
+        a2 = 0.1      # move_x，move_y 加速度
+        v0 = 0.02     # 人手互动，左右移速度
+        v1 = 0.05     # fast down下降速度
+        v2 = 0.5      # move_x，move_y 速度
         direction = 0
         zMoveDirection = 0
 
@@ -121,7 +128,7 @@ class URRobotThread(Thread):
                     if UartProtocolParseThread.someThing == 1:
                         UI.displayPictureName = "Dropped"
                     task_num_break = task_num
-                    task_num = 4
+                    task_num = 3             # 如果滑落，执行任务3
                     task_sub_step = 0
                     status = task_list[task_num][task_sub_step]
                     UI.my_print("wait_message << downSend_FallDown_0")
@@ -141,8 +148,13 @@ class URRobotThread(Thread):
                     v = v1                              # fast down
                     zMoveDirection = -1
 
-                self.rob.movel(target_point, acc=a, vel=v, wait=False)
-                status = "wait_move_z"
+                if zmin < target_point[2] < zmax:
+                    self.rob.movel(target_point, acc=a, vel=v, wait=False)
+                    status = "wait_move_z"
+                else:
+                    UI.my_print("Z coordinate overstep the boundary!")
+                    self.rob.stopl(acc=a)
+                    status = "task_end"
                 
             elif status == "wait_move_z":
                 current_point = self.rob.getl()
@@ -158,7 +170,7 @@ class URRobotThread(Thread):
             elif status == "change_pose":
                 current_point = self.rob.getl()
                 target_point = current_point
-                target_point[2] = 0.09
+                target_point[2] = 0.106
                 target_point[3] = position_list[task_num][task_sub_step][3]
                 target_point[4] = position_list[task_num][task_sub_step][4]
                 target_point[5] = position_list[task_num][task_sub_step][5]
@@ -177,16 +189,21 @@ class URRobotThread(Thread):
                 target_point = current_point
                 target_point[0] = position_list[task_num][task_sub_step][0]  # x change var
 
-                #####################################################################
-                if task_num == 0 and task_sub_step == 2:            # change pose
+                ##################################################################
+                if task_num == 0 and task_sub_step == 3:            # change pose
                     target_point[3] = position_list[task_num][task_sub_step][3]
                     target_point[4] = position_list[task_num][task_sub_step][4]
                     target_point[5] = position_list[task_num][task_sub_step][5]
-                #####################################################################
-
-                self.rob.movel(target_point, acc=a, vel=v2, wait=False)
-                status = "wait_move_x"
-
+                ##################################################################
+                    
+                if xmin < target_point[0] < xmax:
+                    self.rob.movel(target_point, acc=a2, vel=v2, wait=False)
+                    status = "wait_move_x"
+                else:
+                    UI.my_print("X coordinate overstep the boundary!")
+                    self.rob.stopl(acc=a)
+                    status = "task_end"
+                
             elif status == "wait_move_x":
                 current_point = self.rob.getl()
                 if abs(current_point[0] - target_point[0]) < 0.001:
@@ -196,14 +213,19 @@ class URRobotThread(Thread):
             elif status == "move_y":
                 current_point = self.rob.getl()
                 target_point = current_point
-                target_point[1] = position_list[task_num][task_sub_step][1]  # y change var
-                if task_num_break == 1:
-                    target_point[1] = y1
-                if task_num_break == 2:
-                    target_point[1] = y2
-                
-                self.rob.movel(target_point, acc=a, vel=v2, wait=False)
-                status = "wait_move_y"
+                target_point[1] = position_list[task_num][task_sub_step][1]  
+                # if task_num_break == 1:
+                #     target_point[1] = y1
+                # if task_num_break == 2:
+                #     target_point[1] = y2
+
+                if ymin < target_point[1] < ymax:
+                    self.rob.movel(target_point, acc=a2, vel=v2, wait=False)
+                    status = "wait_move_y"
+                else:
+                    UI.my_print("Y coordinate overstep the boundary!")
+                    self.rob.stopl(acc=a)
+                    status = "task_end"
 
             elif status == "wait_move_y":
                 current_point = self.rob.getl()
@@ -218,7 +240,7 @@ class URRobotThread(Thread):
                     status = task_list[task_num][task_sub_step]
                     
             elif status == "UI_Stop":
-                self.rob.stopl(acc = a)
+                self.rob.stopl(acc=a)
                 task_num = 0
                 task_sub_step = 0
                 status = task_list[task_num][task_sub_step]
@@ -235,7 +257,7 @@ class URRobotThread(Thread):
 
             elif status == "wait_message":
 
-                if task_num == 3:
+                if task_num == 2:
                     UartProtocolParseThread.moveSourceLock.acquire()
                     moveSource = UartProtocolParseThread.moveSource
                     UartProtocolParseThread.moveSource = 0
@@ -253,10 +275,10 @@ class URRobotThread(Thread):
                             enableMove = 0
                         current_point = self.rob.getl()
                         if direction == 1:
-                            if abs(current_point[1] - hand_y_right_limit) < 0.001:
+                            if abs(current_point[0] - hand_x_right_limit) < 0.001:
                                 moveSource = 0
                         if direction == -1:
-                            if abs(current_point[1] - hand_y_left_limit) < 0.001:
+                            if abs(current_point[0] - hand_x_left_limit) < 0.001:
                                 moveSource = 0
 
                     if lastmoveSource != moveSource:
@@ -311,7 +333,7 @@ class URRobotThread(Thread):
                 elif this_message == "downSend_TaskComplete":   # exception complete
                     UI.my_print("wait_message << downSend_TaskComplete")
                     if task_num == 1 or task_num == 2:
-                        task_sub_step = 13
+                        task_sub_step = 14
                         status = task_list[task_num][task_sub_step]
                 elif this_message == "downReply_UIStop":
                     UI.my_print("wait_message << downReply_UIStop")
@@ -326,7 +348,7 @@ class URRobotThread(Thread):
                             direction = -1
                             current_point = self.rob.getl()
                             target_point = current_point
-                            target_point[1] = hand_y_left_limit
+                            target_point[0] = hand_x_left_limit
                             self.rob.movel(target_point, acc=a, vel=v0, wait=False)
                             UI.my_print("wait_message << downSend_MoveLeft :: target " + stateMachine + " >> " + " ".join(map(str,target_point)))
 
@@ -336,7 +358,7 @@ class URRobotThread(Thread):
                             direction = 1
                             current_point = self.rob.getl()
                             target_point = current_point
-                            target_point[1] = hand_y_right_limit  # y change var
+                            target_point[0] = hand_x_right_limit  # y change var
                             self.rob.movel(target_point, acc=a, vel=v0, wait=False)
                             UI.my_print("wait_message << downSend_MoveRight :: target " + stateMachine + " >> " + " ".join(map(str,target_point)))
 

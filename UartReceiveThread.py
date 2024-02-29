@@ -13,7 +13,7 @@ if len(port_list) == 0:
 for port in port_list:
     print(port[0])
     serialPort = port[0]
-uart = serial.Serial(serialPort, 256000, timeout=0.5)
+uart = serial.Serial(serialPort, 115200, timeout=0.5)
 
 class UartReceiveThread(Thread):
     def __init__(self):
